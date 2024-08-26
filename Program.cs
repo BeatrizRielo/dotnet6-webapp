@@ -18,9 +18,22 @@ namespace MyWebApp
                 })
                 .Configure(app =>
                 {
-                    app.Run(async context =>
+                    //create a endpoint that will return a simple message a paramater
+                    app.Map("/hello", app =>
                     {
-                        await context.Response.WriteAsync("OK, this works");
+                        app.Run(async context =>
+                        {
+                            var name = context.Request.Query["name"];
+                            await context.Response.WriteAsync($"Hello {name}");
+                        });
+                    });
+                    app.Map("/goodbye", app =>
+                    {
+                        app.Run(async context =>
+                        {
+                            var name = context.Request.Query["name"];
+                            await context.Response.WriteAsync($"Goodbye {name}");
+                        });
                     });
                 })
                 .Build();
